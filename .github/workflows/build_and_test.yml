@@ -49,10 +49,40 @@ on:
         required: false
         type: string
         default: ''
+workflow_dispatch:
+    inputs:
+      java:
+        required: false
+        type: string
+        default: 17
+      branch:
+        description: Branch to run the build against
+        required: false
+        type: string
+        # Change 'master' to 'branch-4.0' in branch-4.0 branch after cutting it.
+        default: master
+      hadoop:
+        description: Hadoop version to run with. HADOOP_PROFILE environment variable should accept it.
+        required: false
+        type: string
+        default: hadoop3
+      envs:
+        description: Additional environment variables to set when running the tests. Should be in JSON format.
+        required: false
+        type: string
+        default: '{"PYSPARK_IMAGE_TO_TEST": "python-311", "PYTHON_TO_TEST": "python3.11"}'
+      jobs:
+        description: >-
+          Jobs to run, and should be in JSON format. The values should be matched with the job's key defined
+          in this file, e.g., build. See precondition job below.
+        required: false
+        type: string
+        default: ''
     secrets:
       codecov_token:
         description: The upload token of codecov.
         required: false
+   
 jobs:
   precondition:
     name: Check changes
